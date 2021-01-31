@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pin Generator</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="pin-generator half-width">
+					<input id="generate-input" class="form-control" type="text" value="0">
+					<button onclick=" getGeneratePin()" id="generate-Btn" class="generate-btn">Generate Pin</button>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="input-section half-width">
+					<input id="typed-input" class="form-control" type="text">
+					<div class="numbers">
+						<div class="calc-body">
+							<div class="calc-button-row">
+								<div value="7" onclick="dis('7')" class="button">7</div>
+								<div value="8" onclick="dis('8')" class="button">8</div>
+								<div value="9" onclick="dis('9')" class="button">9</div>
+							</div>
+							<div class="calc-button-row">
+								<div value="4" onclick="dis('4')" class="button">4</div>
+								<div value="5" onclick="dis('5')" class="button">5</div>
+								<div value="6" onclick="dis('6')" class="button">6</div>
+							</div>
+							<div class="calc-button-row">
+								<div value="1" onclick="dis('1')" class="button">1</div>
+								<div value="2" onclick="dis('2')" class="button">2</div>
+								<div value="3" onclick="dis('3')" class="button">3</div>
+							</div>
+							<div class="calc-button-row">
+								<div class="button">B</div>
+								<div value="0" onclick="dis('0')" class="button">0</div>
+								<div onclick="clr()" class="button">C</div>
+							</div>
+							<div>
+								<button id="submit-btn" type="submit" class="submit-btn">Submit</button>
+								<p class="action-left"> <span id="wrongCount">0</span> try left</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="notify-section">
+				<p id="delete-notify" class="notify">❌ Pin Didn't Match, Please try again</p>
+				<p id="erroMsg" style="color:red">your provided value is long</p>
+				<p id="match-notify" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+			</div>
+		</div>
+
+
+
+		<script>
+			// const generateBtn = document.getElementById("generate-Btn");
+
+			function getPin() {
+
+				let random = Math.random() * 10000;
+				let pin = (random + "").split('.')[0];
+
+				if (pin.length === 4) {
+					return pin;
+				} else {
+					return getPin();
+				}
+
+			}
+
+			function getGeneratePin() {
+				const generateInput = document.getElementById("generate-input");
+				generateInput.value = getPin();
+			};
+
+
+			//typed buttons
+			function dis(val) {
+				document.getElementById("typed-input").value += val
+
+			};
+			//clear function
+			function clr() {
+				document.getElementById("typed-input").value = '';
+
+			};
+
+
+			document.getElementById("submit-btn").addEventListener('click', function () {
+				const typedPin = document.getElementById("typed-input").value;
+				const pin = document.getElementById("generate-input").value;
+
+				if (typedPin === pin) {
+
+					document.getElementById('match-notify').style.display = 'block';
+					document.getElementById('delete-notify').style.display = 'none';
+					document.getElementById("erroMsg").style.display = 'none';
+				} else {
+					if (typedPin.length > 4) {
+						document.getElementById("erroMsg").style.display = 'block';
+					}
+					document.getElementById('delete-notify').style.display = 'block';
+					document.getElementById('match-notify').style.display = 'none';
+
+					const wrongCount = document.getElementById("wrongCount").innerText;
+					const wrongCountNum = parseInt(wrongCount);
+					document.getElementById("wrongCount").innerText = wrongCountNum + 1;
+				};
+			});
+
+
+		</script>
+
+		<!-- <script src="index.js"></script> -->
+</body>
+
+</html>
